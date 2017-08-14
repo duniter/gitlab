@@ -70,6 +70,7 @@ You will understand it is finished when you will see logs from standard process 
 ## Open gitlab configuration file
 Please refer to gitlab.rb file (TODO:link)
 
+This file must be on server at /srv/gitlab/config/gitlab.rb (in the docker container it is at /etc/gitlab/gitlab.rb)
 Enter in the docker container
 ```
 sudo docker exec -it gitlab_gitlab_1 /bin/bash
