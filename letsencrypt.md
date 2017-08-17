@@ -22,7 +22,7 @@ location ^~ /.well-known/acme-challenge {
 ```
 ## Editer le fichier de virtualhost
 
-Éditer `/etc/nginx/sites-available/monsite.conf`
+Éditer `/etc/nginx/sites-available/monsite.conf` 
 ```
 server {
     listen 80;
