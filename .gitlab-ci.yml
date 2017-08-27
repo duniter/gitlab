@@ -8,7 +8,7 @@ stages:
 push_to_github:
     stage: build
     variables:
-        - GIT_STRATEGY: none
+        GIT_STRATEGY: none
     script:
         - rm -rf ./*
         - rm -rf .git
