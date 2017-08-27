@@ -14,6 +14,6 @@ push_to_github:
         - git remote add github $GITHUB_URL_AND_KEY
         - git config --global user.email "contact@duniter.org"
         - git config --global user.name "Duniter"
-        - ls -al packed-refs
+        - cat packed-refs
         - rm -rf refs/pull
         - bash -c "git push --force --mirror github 2>&1 | grep -v duniter-gitlab; echo $?"
