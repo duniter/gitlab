@@ -1,7 +1,7 @@
 First a gitlab runner must be configured. [todo link]
 
 # Create the repository locally by github duplication
-This must be realized using a user that is connected in gitlab with github.(todo link connecttogitlab)
+[This must be realized using a user that is connected in gitlab with github](./ConnectToGitlab.md)
 
 Choose "New project".
 

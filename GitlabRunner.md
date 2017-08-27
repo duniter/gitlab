@@ -9,7 +9,7 @@ Create a public repository in gitlab
 ![](images/GitlabRunner-cf7163f0.png)
 
 Create inside a Dockerfile in this repository
-Please refer to Dockerfile file for an example (TODO:link)
+[Please refer to Dockerfile file for an example](./Dockerfile)
 
 Create also a .gitlab-ci.yml file
 ```
