@@ -1,10 +1,11 @@
 stages:
+    - github-sync
     - test
     - build
     - deploy
 
 push_to_github:
-    stage: build
+    stage: github-sync
     variables:
         GIT_STRATEGY: none
     script:
