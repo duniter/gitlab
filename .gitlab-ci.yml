@@ -1,8 +1,5 @@
 stages:
     - github-sync
-    - test
-    - build
-    - deploy
 
 push_to_github:
     stage: github-sync
