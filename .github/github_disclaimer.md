@@ -9,6 +9,6 @@ All contributions should be performed on the main gitlab repository.
 Pull requests proposed on github would generate more work for the main contributors.
 
 Issues can be submitted on github. However, all issues created on github will be duplicated on gitlab manually and closed with a link to the gitlab issue.
- 
+
 
 # Original README.md
