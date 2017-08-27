@@ -35,6 +35,7 @@ services:
 
 ## Mapped directories
 Still as root user, create gitlab directory in /srv (in production real worls, this may be adapted) and give proper rights to it.
+
 ```
 mkdir /srv/gitlab
 chmod -R 755 /srv/gitlab
@@ -45,22 +46,26 @@ This docker-compose file will map port 2222 of host to 22 of the machine for git
 
 ## Start at once gitlab
 Adapt the following gitlab image version with current you want to install :
+
 ```
 GITLAB_IMAGE=gitlab/gitlab-ce:9.1.2-ce.0 docker-compose up -d
 ```
 
 
 Check that gitlab is running :
+
 ```
 docker ps -a
 ```
 
 Wait for end of first configuration. You can follow using
+
 ```
 docker logs -f gitlab_gitlab_1
 ```
 
 You will understand it is finished when you will see logs from standard process like
+
 ```
 2017-06-05_14:31:28.78329 ::1 - - [05/Jun/2017:14:31:28 UTC] "GET /database HTTP/1.1" 200 37921
 2017-06-05_14:31:28.78338 - -> /database
@@ -72,10 +77,13 @@ Please refer to gitlab.rb file (TODO:link)
 
 This file must be on server at /srv/gitlab/config/gitlab.rb (in the docker container it is at /etc/gitlab/gitlab.rb)
 Enter in the docker container
+
 ```
 sudo docker exec -it gitlab_gitlab_1 /bin/bash
 ```
+
 in the docker container reconfigure gitlab
+
 ```
 gitlab-ctl reconfigure
 ```
@@ -88,6 +96,7 @@ Create CNAME or A entry for the wanted adress (here git-sandbox.duniter.org
 Apply letsencrypt.md (TODO:link)
 
 File for nginx must be `/etc/nginx/sites-available/git.conf`
+
 ```
 server {
     listen 80;
@@ -125,6 +134,16 @@ cp /etc/letsencrypt/live/git-sandbox.duniter.org/privkey.pem /srv/gitlab/config/
 
 In the certbot service, we should copy the certificates so it becomes:
 
+```
+[Unit]
+Description=Let's Encrypt renewal
+
+[Service]
+Type=oneshot
+ExecStart=/bin/bash -c "/usr/bin/certbot renew --quiet --agree-tos;cp /etc/letsencrypt/live/git-sandbox.duniter.org/fullchain.pem /srv/gitlab/config/ssl/git-sandbox.duniter.org.crt;cp /etc/letsencrypt/live/git-sandbox.duniter.org/privkey.pem /srv/gitlab/config/ssl/git-sandbox.duniter.org.key"
+ExecStartPost=/bin/systemctl reload nginx.service
+```
+
 # Create an oauth application
 Follow this guide :
 https://docs.gitlab.com/ce/integration/github.html
@@ -132,4 +151,4 @@ https://docs.gitlab.com/ce/integration/github.html
 # First connection
 At first connection, you will be asked to create a password for admin user.
 
-Once done, create the first user, set him administrator rights, disconnect, connect as this user and then block original admin user (security purpose)
+Once done, create the first user, (I recommand to do it by github connexion) set him administrator rights, disconnect, connect as this user and then block original admin user (security purpose)
