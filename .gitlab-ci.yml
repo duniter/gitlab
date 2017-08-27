@@ -16,6 +16,7 @@ push_to_github:
         - git config --global user.email "contact@duniter.org"
         - git config --global user.name "Duniter"
         # Job would fail if we don't remove refs about pull requests
+        - cat packed-refs
         - bash -c "cat packed-refs | grep -v 'refs/pull' > packed-refs; echo 'Removed pull refs.'"
         - cat packed-refs
         - bash -c "git push --force --mirror github 2>&1 | grep -v duniter-gitlab; echo $?"
