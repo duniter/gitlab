@@ -28,9 +28,8 @@ enforce_readme:
       - git config --global user.email "contact@duniter.org"
       - git config --global user.name "Duniter"
       - git checkout master
-      - ls .github
       - cat .github/github_disclaimer.md > README.md.new
       - cat README.md >> README.md.new
       - cp README.md.new README.md
       - git commit -am "Enforce github readme"
-      - git push origin master
+      - git push --force origin master
