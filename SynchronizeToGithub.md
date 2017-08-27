@@ -137,7 +137,7 @@ enforce_readme:
 
 # Create github templates
 ## Issue template
-Create `.duniter/ISSUE_TEMPLATE.md`
+Create `.github/ISSUE_TEMPLATE.md`
 
 ```
 Please note that all issues should be preferentially opened at
@@ -149,7 +149,7 @@ Thank you for your understanding.
 ```
 
 ## Pull Requests template
-Create `.duniter/PULL_REQUEST_TEMPLATE.md`
+Create `.github/PULL_REQUEST_TEMPLATE.md`
 
 ```
 This project is now tracked on our hosted gitlab server at:
@@ -165,7 +165,7 @@ Thank you for your understanding.
 ```
 
 ## Contributing guide
-Create `.duniter/CONTRIBUTING.md`
+Create `.github/CONTRIBUTING.md`
 
 ```
 This project is now tracked on our hosted gitlab server at:
