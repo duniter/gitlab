@@ -6,7 +6,7 @@ stages:
 create_artifact:
   stage: build
   artifacts:
-    name: "$CI_BUILD_REF_NAME"
+    name: README.md
     paths:
       - README.md
   script:
