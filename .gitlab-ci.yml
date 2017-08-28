@@ -2,11 +2,11 @@ stages:
     - github-sync
     - build
     - publish
-
-create_artifact:
+#Stage name is used in the tag to download artifacts
+README:
   stage: build
   artifacts:
-    name: README.md
+    name: README
     paths:
       - README.md
   script:
