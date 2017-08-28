@@ -1,5 +1,28 @@
 stages:
     - github-sync
+    - build
+    - publish
+
+create_artifact:
+  stage: build
+  artifacts:
+    name: "$CI_BUILD_REF_NAME"
+    paths:
+      - README.md
+  only:
+    - tags
+
+push_realease_to_github:
+    stage: publish
+    script:
+      - export GITHUB_TOKEN=${GITHUB_TOKEN}
+      - echo "Creating a new release in github"
+      - github-release release --user $GITHUB_USER --repo gitlab --tag "${CI_BUILD_TAG}" --name "${CI_BUILD_TAG}"
+
+      - echo "Uploading the artifacts into github"
+      - bash -c 'github-release upload --user $GITHUB_USER --repo gitlab --tag "${CI_BUILD_TAG}" --name "$CI_BUILD_TAG" --file ./README.md'
+    only:
+      - tags
 
 push_to_github:
     stage: github-sync

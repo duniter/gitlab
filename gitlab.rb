@@ -390,7 +390,7 @@ gitlab_rails['gitlab_shell_ssh_port'] = 2222
 ##! Docs: https://docs.gitlab.com/ce/administration/container_registry.html
 ################################################################################
 
-registry_external_url 'https://git-sandbox.duniter.org'
+registry_external_url 'https://git-sandbox.duniter.org:5043'
 
 ### Settings used by GitLab application
 gitlab_rails['registry_enabled'] = true

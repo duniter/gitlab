@@ -115,3 +115,12 @@ Please enter the default Docker image (e.g. ruby:2.1):
 git-sandbox.duniter.org:5043/docker/ubuntu-git:16.04-DUNITER-1
 Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!
 ```
+
+Edit finally the `config.toml` file in the docker to activate the privilege tag.
+```
+[runners.docker]
+    ...
+    privileged = true
+    volumes = ["/var/run/docker.sock:/var/run/docker.sock", "/cache"]
+    ...
+```
