@@ -19,10 +19,9 @@ push_realease_to_github:
     script:
       - export GITHUB_TOKEN=${GITHUB_TOKEN}
       - echo "Creating a new release in github"
-      - github-release release --user $GITHUB_USER --repo gitlab --tag "${CI_BUILD_TAG}" --name "${CI_BUILD_TAG}"
-
+      - github-release release --user duniter --repo gitlab --tag "${CI_BUILD_TAG}"
       - echo "Uploading the artifacts into github"
-      - bash -c 'github-release upload --user $GITHUB_USER --repo gitlab --tag "${CI_BUILD_TAG}" --name "$CI_BUILD_TAG" --file ./README.md'
+      - bash -c 'github-release upload --user duniter --repo gitlab --tag "${CI_BUILD_TAG}" --file ./README.md'
     only:
       - tags
 
