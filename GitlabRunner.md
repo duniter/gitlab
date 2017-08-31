@@ -117,6 +117,7 @@ Runner registered successfully. Feel free to start it, but if it's running alrea
 ```
 
 Edit finally the `config.toml` file in the docker to activate the privilege tag.
+
 ```
 [runners.docker]
     ...
