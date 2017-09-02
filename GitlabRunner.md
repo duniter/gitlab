@@ -41,9 +41,9 @@ Then we need to build it and push it manually.
 So clone the repository on a local machine that get docker available.
 In the folder make
 ```
-docker build -t git-sandbox.duniter.org:5043/docker/ubuntu-git:16.04-DUNITER-1 .
-docker login git-sandbox.duniter.org:5043
-docker push git-sandbox.duniter.org:5043/docker/ubuntu-git:16.04-DUNITER-1
+docker build -t registry.duniter.org/docker/ubuntu-git:16.04-DUNITER-2 .
+docker login registry.duniter.org
+docker push registry.duniter.org/docker/ubuntu-git:16.04-DUNITER-2
 ```
 
 # Create a first runner
@@ -63,8 +63,9 @@ services:
         image: $GITLAB_RUNNER_IMAGE
         domainname: duniter.org
         hostname: gitlabrunner01
+        network_mode: bridge
         volumes:
-            - /srv/gitlab-runner01/config:/etc/gitlab-runner
+            - /var/gitlab-runner01/config:/etc/gitlab-runner
             - /var/run/docker.sock:/var/run/docker.sock
         restart: always
 ```
@@ -72,7 +73,7 @@ services:
 Create the folder
 
 ```
-mkdir -p /srv/gitlab-runner01/config
+mkdir -p /var/gitlab-runner01/config
 ```
 
 
@@ -80,7 +81,7 @@ mkdir -p /srv/gitlab-runner01/config
 Adapt the following gitlab runner image version with current you want to install :
 
 ```
-GITLAB_RUNNER_IMAGE=gitlab/gitlab-runner:v9.4.2 docker-compose up -d
+GITLAB_RUNNER_IMAGE=gitlab/gitlab-runner:v9.5.0 docker-compose up -d
 ```
 
 ## Configure gitlab runner
@@ -91,7 +92,7 @@ docker exec -it gitlabrunner01_gitlab-runner_1 /bin/bash
 ```
 
 Execute `gitlab-runner register`
-and answer the questions. Token must be got from  https://git-sandbox.duniter.org/admin/runners
+and answer the questions. Token must be got from  https://git.duniter.org/admin/runners
 ```
 root@gitlabrunner01:/# gitlab-runner register
 Running in system-mode.
@@ -112,7 +113,7 @@ Registering runner... succeeded                     runner=xfTHNeMh
 Please enter the executor: docker-ssh, ssh, docker+machine, docker-ssh+machine, docker, shell, virtualbox, kubernetes, parallels:
 docker
 Please enter the default Docker image (e.g. ruby:2.1):
-git-sandbox.duniter.org:5043/docker/ubuntu-git:16.04-DUNITER-1
+registry.duniter.org/docker/ubuntu-git:16.04-DUNITER-2
 Runner registered successfully. Feel free to start it, but if it's running already the config should be automatically reloaded!
 ```
 

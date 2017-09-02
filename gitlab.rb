@@ -10,7 +10,7 @@
 ##! URL on which GitLab will be reachable.
 ##! For more details on configuring external_url see:
 ##! https://docs.gitlab.com/omnibus/settings/configuration.html#configuring-the-external-url-for-gitlab
-external_url 'https://git-sandbox.duniter.org'
+external_url 'https://git.duniter.org'
 
 ## Legend
 ##! The following notations at the beginning of each line may be used to
@@ -36,7 +36,7 @@ external_url 'https://git-sandbox.duniter.org'
 ## gitlab.yml configuration
 ##! Docs: https://gitlab.com/gitlab-org/omnibus-gitlab/blob/master/doc/settings/gitlab.yml.md
 ################################################################################
-gitlab_rails['gitlab_ssh_host'] = 'git-sandbox.duniter.org'
+gitlab_rails['gitlab_ssh_host'] = 'git.duniter.org'
 gitlab_rails['time_zone'] = 'Europe/Paris'
 
 ### Email Settings
@@ -265,7 +265,7 @@ gitlab_rails['omniauth_providers'] = [
 # gitlab_rails['shared_path'] = '/var/opt/gitlab/gitlab-rails/shared'
 
 ### GitLab Shell settings for GitLab
-gitlab_rails['gitlab_shell_ssh_port'] = 2222
+gitlab_rails['gitlab_shell_ssh_port'] = 2200
 # gitlab_rails['git_max_size'] = 20971520
 # gitlab_rails['git_timeout'] = 10
 # gitlab_rails['gitlab_shell_git_timeout'] = 800
@@ -390,7 +390,7 @@ gitlab_rails['gitlab_shell_ssh_port'] = 2222
 ##! Docs: https://docs.gitlab.com/ce/administration/container_registry.html
 ################################################################################
 
-registry_external_url 'https://git-sandbox.duniter.org:5043'
+registry_external_url 'https://git.duniter.org:5043'
 
 ### Settings used by GitLab application
 gitlab_rails['registry_enabled'] = true
@@ -752,8 +752,8 @@ nginx['redirect_http_to_https'] = false
 ##! if ssl_verify_client on, verification depth in the client certificates chain
 # nginx['ssl_verify_depth'] = "1"
 
-nginx['ssl_certificate'] = "/etc/gitlab/ssl/git-sandbox.duniter.org.crt"
-nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/git-sandbox.duniter.org.key"
+nginx['ssl_certificate'] = "/etc/gitlab/ssl/git.duniter.org.crt"
+nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/git.duniter.org.key"
 # nginx['ssl_ciphers'] = "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256"
 # nginx['ssl_prefer_server_ciphers'] = "on"
 
@@ -1226,8 +1226,8 @@ registry_nginx['client_max_body_size'] = '0'
 # registry_nginx['redirect_http_to_https_port'] = 80
 # registry_nginx['ssl_ciphers'] = "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256"
 # registry_nginx['ssl_prefer_server_ciphers'] = "on"
-registry_nginx['ssl_certificate'] = "/etc/gitlab/ssl/git-sandbox.duniter.org.crt"
-registry_nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/git-sandbox.duniter.org.key"
+registry_nginx['ssl_certificate'] = "/etc/gitlab/ssl/git.duniter.org.crt"
+registry_nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/git.duniter.org.key"
 # registry_nginx['ssl_client_certificate'] = "/etc/gitlab/ssl/ca.crt"
 # registry_nginx['ssl_verify_client'] = "off"
 # registry_nginx['ssl_verify_depth'] = "1"

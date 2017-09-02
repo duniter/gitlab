@@ -1,6 +1,6 @@
 # Backup
 ## Backup main data
-By default, backups will be stored in `/var/opt/gitlab/backups`. That folder is mounted on host by docker on `/srv/gitlab/data/backups`.
+By default, backups will be stored in `/var/opt/gitlab/backups`. That folder is mounted on host by docker on `/var/gitlab/data/backups`.
 Launch on the host the following command, it will create a backup.
 ```
 sudo docker exec -t gitlab_gitlab_1 gitlab-rake gitlab:backup:create
@@ -8,14 +8,14 @@ sudo docker exec -t gitlab_gitlab_1 gitlab-rake gitlab:backup:create
 
 Once done, you will get the backup in the mentionned directory:
 ```
-$ sudo ls /srv/gitlab/data/backups
+$ sudo ls /var/gitlab/data/backups
 1503917476_2017_08_28_9.4.4_gitlab_backup.tar
 ```
 
 ## Backup config and secret data
 Create a folder in backups to store the secret and config backups:
 ```
-sudo mkdir /srv/gitlab/data/backups/secret
+sudo mkdir /var/gitlab/data/backups/secret
 ```
 Backup command is
 ```
@@ -24,7 +24,7 @@ sudo docker exec -t gitlab_gitlab_1 /bin/sh -c 'umask 0077; tar cfz /var/opt/git
 
 Once done, you will get the backup in the mentionned directory:
 ```
-$ sudo ls /srv/gitlab/data/backups/secret
+$ sudo ls /var/gitlab/data/backups/secret
 etc-gitlab-1503918015.tgz
 ```
 
@@ -38,12 +38,12 @@ In the root crontab, create the following lines for a daily backup:
 ## Purge
 We need to use the following command
 ```
-sudo find /srv/gitlab/data/backups/ -mindepth 1 -mtime +7 -type f -delete
+sudo find /var/gitlab/data/backups/ -mindepth 1 -mtime +7 -type f -delete
 ```
 
 In the root crontab, create the following lines for a daily backup:
 ```
-00 03 * * * find /srv/gitlab/data/backups/ -mindepth 1 -mtime +7 -type f -delete
+00 03 * * * find /var/gitlab/data/backups/ -mindepth 1 -mtime +7 -type f -delete
 ```
 
 ## Externalize this backup
