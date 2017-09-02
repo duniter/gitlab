@@ -13,6 +13,8 @@ README:
     - ls README.md
   only:
     - tags
+  tags:
+    - github
 
 push_realease_to_github:
     stage: publish
@@ -24,6 +26,8 @@ push_realease_to_github:
       - bash -c 'github-release upload --user duniter --repo gitlab --tag "${CI_BUILD_TAG}" --name "README.md" --file ./README.md'
     only:
       - tags
+    tags:
+      - github
 
 push_to_github:
     stage: github-sync
@@ -40,7 +44,9 @@ push_to_github:
         - bash -c "cat packed-refs | grep -v 'refs/pull' > packed-refs-new; echo 'Removed pull refs.'"
         - mv packed-refs-new packed-refs
         - bash -c "git push --force --mirror github 2>&1 | grep -v duniter-gitlab; echo $?"
-
+    tags:
+      - github
+      
 enforce_readme:
     stage: github-sync
     variables:
@@ -57,3 +63,5 @@ enforce_readme:
       - cp README.md.new README.md
       - git commit -am "Enforce github readme"
       - git push --force origin master
+    tags:
+      - github
