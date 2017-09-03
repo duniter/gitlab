@@ -1,3 +1,4 @@
+# coding: utf-8
 ## GitLab configuration settings
 ##! This file is generated during initial installation and **is not** modified
 ##! during upgrades.
@@ -40,10 +41,10 @@ gitlab_rails['gitlab_ssh_host'] = 'git.duniter.org'
 gitlab_rails['time_zone'] = 'Europe/Paris'
 
 ### Email Settings
-# gitlab_rails['gitlab_email_enabled'] = true
-# gitlab_rails['gitlab_email_from'] = 'example@example.com'
-# gitlab_rails['gitlab_email_display_name'] = 'Example'
-# gitlab_rails['gitlab_email_reply_to'] = 'noreply@example.com'
+gitlab_rails['gitlab_email_enabled'] = true
+gitlab_rails['gitlab_email_from'] = 'noreply@duniter.org'
+gitlab_rails['gitlab_email_display_name'] = 'Git Duniter'
+gitlab_rails['gitlab_email_reply_to'] = 'noreply@duniter.org'
 # gitlab_rails['gitlab_email_subject_suffix'] = ''
 
 ### GitLab user privileges
@@ -216,8 +217,8 @@ gitlab_rails['omniauth_block_auto_created_users'] = false
 gitlab_rails['omniauth_providers'] = [
   {
     "name" => "github",
-    "app_id" => "f25318f5bcfe5cac4fb5",
-    "app_secret" => "41bd144f82b9198e07fc1d23c30207f7896717d5",
+    "app_id" => "7e13fcc992b94d053e7a",
+    "app_secret" => "3a0b0d87c0e8c17df56d8126d0db67823a671971",
     "args" => { "scope" => "user:email" }
   }
 ]
@@ -265,7 +266,7 @@ gitlab_rails['omniauth_providers'] = [
 # gitlab_rails['shared_path'] = '/var/opt/gitlab/gitlab-rails/shared'
 
 ### GitLab Shell settings for GitLab
-gitlab_rails['gitlab_shell_ssh_port'] = 2200
+gitlab_rails['gitlab_shell_ssh_port'] = 22
 # gitlab_rails['git_max_size'] = 20971520
 # gitlab_rails['git_timeout'] = 10
 # gitlab_rails['gitlab_shell_git_timeout'] = 800
@@ -368,15 +369,15 @@ gitlab_rails['gitlab_shell_ssh_port'] = 2200
 ###! Docs: https://docs.gitlab.com/omnibus/settings/smtp.html
 ###! **Use smtp instead of sendmail/postfix.**
 
-# gitlab_rails['smtp_enable'] = true
-# gitlab_rails['smtp_address'] = "smtp.server"
-# gitlab_rails['smtp_port'] = 465
+gitlab_rails['smtp_enable'] = true
+gitlab_rails['smtp_address'] = "forum.duniter.org"
+gitlab_rails['smtp_port'] = 465
 # gitlab_rails['smtp_user_name'] = "smtp user"
 # gitlab_rails['smtp_password'] = "smtp password"
-# gitlab_rails['smtp_domain'] = "example.com"
+#gitlab_rails['smtp_domain'] = "duniter.org"
 # gitlab_rails['smtp_authentication'] = "login"
 # gitlab_rails['smtp_enable_starttls_auto'] = true
-# gitlab_rails['smtp_tls'] = false
+# gitlab_rails['smtp_tls'] = true
 
 ###! **Can be: 'none', 'peer', 'client_once', 'fail_if_no_peer_cert'**
 ###! Docs: http://api.rubyonrails.org/classes/ActionMailer/Base.html
@@ -390,7 +391,7 @@ gitlab_rails['gitlab_shell_ssh_port'] = 2200
 ##! Docs: https://docs.gitlab.com/ce/administration/container_registry.html
 ################################################################################
 
-registry_external_url 'https://git.duniter.org:5043'
+registry_external_url 'https://registry.duniter.org'
 
 ### Settings used by GitLab application
 gitlab_rails['registry_enabled'] = true
@@ -1226,8 +1227,8 @@ registry_nginx['client_max_body_size'] = '0'
 # registry_nginx['redirect_http_to_https_port'] = 80
 # registry_nginx['ssl_ciphers'] = "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256"
 # registry_nginx['ssl_prefer_server_ciphers'] = "on"
-registry_nginx['ssl_certificate'] = "/etc/gitlab/ssl/git.duniter.org.crt"
-registry_nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/git.duniter.org.key"
+registry_nginx['ssl_certificate'] = "/etc/gitlab/ssl/registry.duniter.org.crt"
+registry_nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/registry.duniter.org.key"
 # registry_nginx['ssl_client_certificate'] = "/etc/gitlab/ssl/ca.crt"
 # registry_nginx['ssl_verify_client'] = "off"
 # registry_nginx['ssl_verify_depth'] = "1"
@@ -1241,11 +1242,11 @@ registry_nginx['listen_port'] = 5043
 # registry_nginx['listen_https'] = nil
 
 registry_nginx['proxy_set_headers'] = {
-"Host" => "$http_host",
-"X-Real-IP" => "$remote_addr",
-"X-Forwarded-For" => "$proxy_add_x_forwarded_for",
-"X-Forwarded-Proto" => "https",
-"X-Forwarded-Ssl" => "on"
+  "Host" => "$http_host",
+  "X-Real-IP" => "$remote_addr",
+  "X-Forwarded-For" => "$proxy_add_x_forwarded_for",
+  "X-Forwarded-Proto" => "https",
+  "X-Forwarded-Ssl" => "on"
 }
 
 ##! Recommended by : https://raymii.org/s/tutorials/Strong_SSL_Security_On_nginx.html
@@ -1273,7 +1274,7 @@ registry_nginx['proxy_set_headers'] = {
 ##! Docs: https://docs.gitlab.com/ce/administration/monitoring/prometheus/
 ################################################################################
 
-# prometheus['enable'] = true
+prometheus['enable'] = true
 # prometheus['monitor_kubernetes'] = true
 # prometheus['username'] = 'gitlab-prometheus'
 # prometheus['uid'] = nil
@@ -1324,7 +1325,7 @@ registry_nginx['proxy_set_headers'] = {
 # }
 
 ##! Advanced settings. Should be changed only if absolutely needed.
-# prometheus['listen_address'] = 'localhost:9090'
+prometheus['listen_address'] = '0.0.0.0:9090'
 
 ################################################################################
 ## Prometheus Node Exporter

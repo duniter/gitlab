@@ -26,13 +26,20 @@ services:
             - "/var/gitlab/config:/etc/gitlab"
             - "/var/gitlab/logs:/var/log/gitlab"
             - "/var/gitlab/data:/var/opt/gitlab"
+            - "/var/gitlab/run:/var/run"
+            - "/run/gitlab:/run"
         network_mode: bridge
         ports:
-            - "2200:22"
+            - "22:22"
             - "8443:443"
             - "5043:5043"
+            - "9090:9090"
         restart: always
 ```
+
+Noticed that /run/gitlab is created in a tmpfs because it is recommended to map /run in docker omnibus gitlab to a tmpfs filesystem.
+
+Create `/run/gitlab/sshd` and set rights to 0550
 
 ## Mapped directories
 Still as root user, create gitlab directory in /var (in production real worls, this may be adapted) and give proper rights to it.
@@ -40,10 +47,12 @@ Still as root user, create gitlab directory in /var (in production real worls, t
 ```
 mkdir /var/gitlab
 chmod -R 755 /var/gitlab
+mkdir /run/gitlab
 ```
+Create `/run/gitlab/sshd` and set rights to 0550
 
 ## Ports used
-This docker-compose file will map port 2200 of host to 22 of the machine for git+ssh, 8443 to 443 for https (no http) and 5043 to 5043 for docker images.
+This docker-compose file will map port 22 of host to 22 of the machine for git+ssh, 8443 to 443 for https (no http) and 5043 to 5043 for docker images and 9090 to 9090 for prometheus.
 
 ## Start at once gitlab
 Adapt the following gitlab image version with current you want to install :
@@ -92,8 +101,7 @@ gitlab-ctl reconfigure
 
 # Configure the reverse proxy
 ## Configure the dns
-Create CNAME or A entry for the wanted adress (here git.duniter.org and registry.duniter.org
-)
+Create CNAME or A entry for the wanted adress (here git.duniter.org and registry.duniter.org and prometheus.duniter.org)
 Apply [letsencrypt.md](./letsencrypt.md)
 
 File for nginx must be `/etc/nginx/sites-available/git.conf`
@@ -118,6 +126,17 @@ server {
         include /etc/nginx/includes/proxy-to-registry-gitdocker.conf;
     }
 }
+server {
+    server_name prometheus.duniter.org;
+    client_max_body_size 0;
+    include includes/certificate_prometheus.conf;
+    include includes/letsencrypt.conf;
+    location / {
+        include /etc/nginx/includes/proxy-to-prometheus-gitdocker.conf;
+        auth_basic "Restricted Content";
+        auth_basic_user_file /etc/nginx/includes/htpasswd_prometheus;
+    }
+}
 ```
 
 File for proxy to main gitlab must be `/etc/nginx/includes/proxy-to-gitdocker.conf`
@@ -136,7 +155,7 @@ proxy_connect_timeout 600;
 ```
 
 
-File for proxy to main gitlab must be `/etc/nginx/includes/proxy-to-registry-gitdocker.conf`
+File for proxy to registry gitlab must be `/etc/nginx/includes/proxy-to-registry-gitdocker.conf`
 
 ```
 proxy_redirect off;
@@ -150,6 +169,20 @@ send_timeout 600;
 proxy_read_timeout 600;
 proxy_connect_timeout 600;
 ```
+File for proxy to registry gitlab must be `/etc/nginx/includes/proxy-to-prometheus-gitdocker.conf`
+
+```
+proxy_redirect off;
+proxy_set_header Host $host:$server_port;
+proxy_set_header X-Real-IP $remote_addr;
+proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+proxy_set_header X-Forwarded-Port $server_port;
+proxy_set_header X-Forwarded-Proto $scheme;
+proxy_pass http://localhost:9090/;
+send_timeout 600;
+proxy_read_timeout 600;
+proxy_connect_timeout 600;
+```
 
 Copy certificates
 
@@ -158,6 +191,8 @@ cp /etc/letsencrypt/live/git.duniter.org/fullchain.pem /var/gitlab/config/ssl/gi
 cp /etc/letsencrypt/live/git.duniter.org/privkey.pem /var/gitlab/config/ssl/git.duniter.org.key
 cp /etc/letsencrypt/live/registry.duniter.org/fullchain.pem /var/gitlab/config/ssl/registry.duniter.org.crt
 cp /etc/letsencrypt/live/registry.duniter.org/privkey.pem /var/gitlab/config/ssl/registry.duniter.org.key
+cp /etc/letsencrypt/live/prometheus.duniter.org/fullchain.pem /var/gitlab/config/ssl/prometheus.duniter.org.crt
+cp /etc/letsencrypt/live/prometheus.duniter.org/privkey.pem /var/gitlab/config/ssl/prometheus.duniter.org.key
 ```
 
 In the certbot service, we should copy the certificates so it becomes:
@@ -168,7 +203,7 @@ Description=Let's Encrypt renewal
 
 [Service]
 Type=oneshot
-ExecStart=/bin/bash -c "/usr/bin/certbot renew --quiet --agree-tos;cp /etc/letsencrypt/live/git.duniter.org/fullchain.pem /var/gitlab/config/ssl/git.duniter.org.crt;cp /etc/letsencrypt/live/git.duniter.org/privkey.pem /var/gitlab/config/ssl/git.duniter.org.key;cp /etc/letsencrypt/live/registry.duniter.org/fullchain.pem /var/gitlab/config/ssl/registry.duniter.org.crt;cp /etc/letsencrypt/live/registry.duniter.org/privkey.pem /var/gitlab/config/ssl/registry.duniter.org.key"
+ExecStart=/bin/bash -c "/usr/bin/certbot renew --quiet --agree-tos;cp /etc/letsencrypt/live/git.duniter.org/fullchain.pem /var/gitlab/config/ssl/git.duniter.org.crt;cp /etc/letsencrypt/live/git.duniter.org/privkey.pem /var/gitlab/config/ssl/git.duniter.org.key;cp /etc/letsencrypt/live/registry.duniter.org/fullchain.pem /var/gitlab/config/ssl/registry.duniter.org.crt;cp /etc/letsencrypt/live/registry.duniter.org/privkey.pem /var/gitlab/config/ssl/registry.duniter.org.key;cp /etc/letsencrypt/live/prometheus.duniter.org/fullchain.pem /var/gitlab/config/ssl/prometheus.duniter.org.crt;cp /etc/letsencrypt/live/prometheus.duniter.org/privkey.pem /var/gitlab/config/ssl/prometheus.duniter.org.key"
 ExecStartPost=/bin/systemctl reload nginx.service
 ```
 
