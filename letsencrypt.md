@@ -72,10 +72,12 @@ IMPORTANT NOTES:
    Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
    Donating to EFF:                    https://eff.org/donate-le
 ```
+
 # Inclure le certificat
 ## Créer l'include adapté
 
 Créer le fichier  `/etc/nginx/includes/certificate_monsite_mondomain.conf`
+
 ```
 listen       443 ssl;
 ssl_certificate /etc/letsencrypt/live/monsite.mondomain.tutu/fullchain.pem;

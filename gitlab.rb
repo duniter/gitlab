@@ -769,7 +769,7 @@ nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/git.duniter.org.key"
 # nginx['ssl_session_timeout'] = "5m"
 
 # nginx['ssl_dhparam'] = nil # Path to dhparams.pem, eg. /etc/gitlab/ssl/dhparams.pem
-# nginx['listen_addresses'] = ['*', '[::]']
+nginx['listen_addresses'] = ['74.0.0.10', '[::]']
 
 ##! **Defaults to forcing web browsers to always communicate using only HTTPS**
 ##! Docs: https://docs.gitlab.com/omnibus/settings/nginx.html#setting-http-strict-transport-security
@@ -912,16 +912,16 @@ nginx['listen_https'] = nil
 ################################################################################
 
 ##! Define to enable GitLab Pages
-# pages_external_url "http://pages.example.com/"
-# gitlab_pages['enable'] = false
+pages_external_url "http://pages.duniter.org/"
+gitlab_pages['enable'] = true
 
 ##! Configure to expose GitLab Pages on external IP address, serving the HTTP
-# gitlab_pages['external_http'] = []
+gitlab_pages['external_http'] = ['73.0.0.10:80']
 
 ##! Configure to expose GitLab Pages on external IP address, serving the HTTPS
-# gitlab_pages['external_https'] = []
+gitlab_pages['external_https'] = ['73.0.0.10:443']
 
-# gitlab_pages['listen_proxy'] = "localhost:8090"
+gitlab_pages['listen_proxy'] = "74.0.0.10:8080"
 # gitlab_pages['redirect_http'] = true
 # gitlab_pages['use_http2'] = true
 # gitlab_pages['dir'] = "/var/opt/gitlab/gitlab-pages"
@@ -934,11 +934,11 @@ nginx['listen_https'] = nil
 ## GitLab Pages NGINX
 ################################################################################
 
-# pages_nginx['enable'] = false
-# pages_nginx['redirect_http_to_https'] = false
+pages_nginx['enable'] = true
+pages_nginx['redirect_http_to_https'] = false
 # pages_nginx['redirect_http_to_https_port'] = 80
-# pages_nginx['ssl_certificate'] = "/etc/gitlab/ssl/#{node['fqdn']}.crt"
-# pages_nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/#{node['fqdn']}.key"
+#pages_nginx['ssl_certificate'] = "/etc/gitlab/ssl/pages.duniter.org.crt"
+#pages_nginx['ssl_certificate_key'] = "/etc/gitlab/ssl/pages.duniter.org.key"
 # pages_nginx['ssl_client_certificate'] = "/etc/gitlab/ssl/ca.crt"
 # pages_nginx['ssl_verify_client'] = "off"
 # pages_nginx['ssl_verify_depth'] = "1"
@@ -958,11 +958,11 @@ nginx['listen_https'] = nil
 ##! Path to ci_dhparams.pem, eg. /etc/gitlab/ssl/ci_dhparams.pem
 # pages_nginx['ssl_dhparam'] = nil
 
-# pages_nginx['listen_addresses'] = ['*', '[::]']
+pages_nginx['listen_addresses'] = ['74.0.0.10', '[::]']
 
 ##! **Override only if you use a reverse proxy**
 ##! Docs: https://docs.gitlab.com/omnibus/settings/nginx.html#setting-the-nginx-listen-port
-# pages_nginx['listen_port'] = nil
+pages_nginx['listen_port'] = 80
 
 ##! **Override only if your reverse proxy internally communicates over HTTP**
 ##! Docs: https://docs.gitlab.com/omnibus/settings/nginx.html#supporting-proxied-ssl
@@ -1262,7 +1262,7 @@ registry_nginx['proxy_set_headers'] = {
 ##! Path to ci_dhparams.pem, eg. /etc/gitlab/ssl/ci_dhparams.pem
 # registry_nginx['ssl_dhparam'] = nil
 
-# registry_nginx['listen_addresses'] = ['*', '[::]']
+registry_nginx['listen_addresses'] = ['74.0.0.10', '[::]']
 
 ### Advanced settings
 # registry_nginx['log_directory'] = "/var/log/gitlab/nginx"
@@ -1325,7 +1325,7 @@ prometheus['enable'] = true
 # }
 
 ##! Advanced settings. Should be changed only if absolutely needed.
-prometheus['listen_address'] = '0.0.0.0:9090'
+prometheus['listen_address'] = '74.0.0.10:9090'
 
 ################################################################################
 ## Prometheus Node Exporter
