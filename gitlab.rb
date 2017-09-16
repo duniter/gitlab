@@ -217,8 +217,8 @@ gitlab_rails['omniauth_block_auto_created_users'] = false
 gitlab_rails['omniauth_providers'] = [
   {
     "name" => "github",
-    "app_id" => "7e13fcc992b94d053e7a",
-    "app_secret" => "3a0b0d87c0e8c17df56d8126d0db67823a671971",
+    "app_id" => "azer",
+    "app_secret" => "aer",
     "args" => { "scope" => "user:email" }
   }
 ]
