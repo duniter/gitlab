@@ -58,6 +58,8 @@ push_to_github:
     stage: github-sync
     variables:
         GIT_STRATEGY: none
+    tags:
+        - github
     script:
         - rm -rf ./*
         - rm -rf .git
@@ -105,6 +107,8 @@ push_to_github:
     stage: github-sync
     variables:
         GIT_STRATEGY: none
+    tags:
+      - github
     script:
         - rm -rf ./*
         - rm -rf .git
@@ -121,6 +125,8 @@ enforce_readme:
     stage: github-sync
     variables:
         GIT_STRATEGY: none
+    tags:
+      - github
     script:
       - rm -rf ./*
       - rm -rf .git
