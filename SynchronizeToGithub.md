@@ -58,6 +58,8 @@ push_to_github:
     stage: github-sync
     variables:
         GIT_STRATEGY: none
+    tags:
+        - github
     script:
         - rm -rf ./*
         - rm -rf .git
@@ -105,6 +107,8 @@ push_to_github:
     stage: github-sync
     variables:
         GIT_STRATEGY: none
+    tags:
+      - github
     script:
         - rm -rf ./*
         - rm -rf .git
@@ -121,6 +125,8 @@ enforce_readme:
     stage: github-sync
     variables:
         GIT_STRATEGY: none
+    tags:
+      - github
     script:
       - rm -rf ./*
       - rm -rf .git
@@ -130,7 +136,7 @@ enforce_readme:
       - git checkout master
       - cat .duniter/github_disclaimer.md > README.md.new
       - cat README.md >> README.md.new
-      - cp README.md.new README.md
+      - mv README.md.new README.md
       - git commit -am "Enforce github readme"
       - git push origin master
 ```
